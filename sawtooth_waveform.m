@@ -1,44 +1,19 @@
-% Sawtooth Waveform Generation
-% Generates a sawtooth wave using piecewise linear ramp segments
+clc; clear all; close all;
+N = input('enter the number of cycles....');
+t1 = 0:25;              % one tooth: ramps up from 0 to 25
+t = [];
+for i = 1:N
+    t = [t,t1];         % repeat the tooth N times
+end
 
-clear all; close all; clc;
+subplot(211);
+plot(t); grid on;
+xlabel('---> time');
+ylabel('---> amplitude');
+title('analog saw tooth signal');
 
-% Parameters
-fs = 1000;           % Sampling frequency (Hz)
-f = 5;               % Fundamental frequency (Hz)
-A = 1;               % Amplitude
-duration = 1;        % Duration (seconds)
-t = 0:1/fs:duration; % Time vector
-
-% Generate sawtooth wave
-% Using modulo operation to create the ramp
-sawtooth_wave = A * (2 * (f * t - floor(f * t + 0.5)));
-
-% Alternatively, using sawtooth function if available
-% sawtooth_wave = A * sawtooth(2 * pi * f * t);
-
-% Plot
-figure;
-subplot(2,1,1);
-plot(t, sawtooth_wave, 'LineWidth', 1.5);
-title('Sawtooth Waveform (Time Domain)');
-xlabel('Time (s)');
-ylabel('Amplitude');
-grid on;
-xlim([0 0.5]);
-
-subplot(2,1,2);
-n = length(sawtooth_wave);
-freq = (0:n-1)*(fs/n);
-magnitude = abs(fft(sawtooth_wave))/n;
-plot(freq(1:n/2), magnitude(1:n/2), 'LineWidth', 1.5);
-title('Magnitude Spectrum');
-xlabel('Frequency (Hz)');
-ylabel('Magnitude');
-grid on;
-xlim([0 100]);
-
-disp('Sawtooth waveform generated successfully!');
-disp(['Fundamental frequency: ', num2str(f), ' Hz']);
-disp(['Sampling frequency: ', num2str(fs), ' Hz']);
-disp(['Duration: ', num2str(duration), ' s']);
+subplot(212);
+stem(t); grid on;
+xlabel('---> time');
+ylabel('---> amplitude');
+title('discrete saw tooth signal');
